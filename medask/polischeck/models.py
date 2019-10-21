@@ -32,7 +32,7 @@ def num_check(number):
 
 def service_check(service):
     table_path = '/'.join([os.path.dirname(__file__), '../tables/services.json'])
-    with open(table_path, 'r') as services_json:
+    with open(table_path, 'r', encoding='UTF-8') as services_json:
         all_services = json.load(services_json)
     for column in all_services:
         if service in all_services[column]:
