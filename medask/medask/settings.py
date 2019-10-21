@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'medask',
+    'rest_framework',
     'polischeck',
     'django.contrib.admin',
     'django.contrib.auth',
