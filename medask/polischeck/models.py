@@ -17,7 +17,7 @@ class Polis(models.Model):
     polis_type = models.CharField(max_length=3, choices=POLIS_TYPES, default='OMS')    
     
     def __str__(self):
-        return self.company_name
+        return self.company_name + ' ' + self.polis_type
 
 
 def num_check(number):
@@ -41,4 +41,3 @@ def service_check(service):
             return True
         
     raise ObjectDoesNotExist
-
