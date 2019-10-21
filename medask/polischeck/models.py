@@ -1,13 +1,13 @@
 from django.db import models
-import django.core.exceptions
+from django.core.exceptions import ObjectDoesNotExist
 import re
 import os
 import json
 
+
 class Polis(models.Model):
     
-    POLIS_TYPES = 
-        [
+    POLIS_TYPES = [
             ('OMS', 'OMS'),
             ('DMS', 'DMS'),
         ]
@@ -18,6 +18,7 @@ class Polis(models.Model):
     
     def __str__(self):
         return self.company_name
+
 
 def num_check(number):
     
@@ -30,6 +31,7 @@ def num_check(number):
     
     raise ObjectDoesNotExist
 
+
 def service_check(service):
     table_path = '/'.join([os.path.dirname(__file__), '../tables/services.json'])
     with open(table_path, 'r', encoding='UTF-8') as services_json:
@@ -39,4 +41,4 @@ def service_check(service):
             return True
         
     raise ObjectDoesNotExist
-    
+
