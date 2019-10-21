@@ -1,4 +1,6 @@
 from django.db import models
+import django.core.exceptions
+import re
 
 class Polis(models.Model):
     
@@ -10,5 +12,15 @@ class Polis(models.Model):
     
     company_name = models.CharField(max_length=255)
     num_regex = models.CharField(max_length=50)
-    polis_type = models.CharField(max_length=3, choices=POLIS_TYPES, default='OMS')
+    polis_type = models.CharField(max_length=3, choices=POLIS_TYPES, default='OMS')    
+
+def num_check(number):
     
+    polises = Polis.objects.all()
+    for polis in polises:
+        if re.match(polis.num_regex, number):
+            company = polis.company_name
+            polis_type = polis.polis_type
+            return company, polis_type
+    
+    raise ObjectDoesNotExist
