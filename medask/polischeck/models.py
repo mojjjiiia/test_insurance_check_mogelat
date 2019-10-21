@@ -13,6 +13,9 @@ class Polis(models.Model):
     company_name = models.CharField(max_length=255)
     num_regex = models.CharField(max_length=50)
     polis_type = models.CharField(max_length=3, choices=POLIS_TYPES, default='OMS')    
+    
+    def __str__(self):
+        return self.company_name
 
 def num_check(number):
     
