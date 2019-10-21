@@ -1,6 +1,8 @@
 from rest_framework import serializers
+from .models import Polis
 
-class PolisSerializer(serializers.Serializer):
-    company_name = serializers.CharField(max_length=255)
-    num_regex = serializers.CharField(max_length=50)
-    polis_type = serializers.CharField(max_length=3)
+
+class PolisSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Polis
+        fields = ('company_name', 'polis_type', 'num_regex')
