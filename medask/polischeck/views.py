@@ -3,6 +3,7 @@ from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Polis, num_check, service_check, request_to_sk, request_to_service_db
+from urllib.parse import unquote_plus
 import json
 
 class SearchView(APIView):
@@ -19,6 +20,7 @@ class SearchView(APIView):
                 return Response(resp)
         
         if service:
+            service = unquote_plus(service)
             in_database = service_check(service)
             return Response({'service_in_base': in_database})        
 
