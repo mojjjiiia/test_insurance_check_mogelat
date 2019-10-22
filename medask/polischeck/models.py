@@ -39,5 +39,4 @@ def service_check(service):
     for column in all_services:
         if service in all_services[column]:
             return True
-        
-    raise ObjectDoesNotExist
+    return False
