@@ -29,6 +29,7 @@ class LocalBase(models.Model):
     polis_ltd_datetime = models.DateTimeField(auto_now_add=True)
     #auto_now_add=True для того что бы оценить количество обращений по данному регулярному выражению и дату первого обращения   
 
+
 def num_check(number):
     
     polises = Polis.objects.all()
@@ -45,8 +46,9 @@ def service_check(service):
     table_path = '/'.join([os.path.dirname(__file__), '../tables/services.json'])
     with open(table_path, 'r', encoding='UTF-8') as services_json:
         all_services = json.load(services_json)
+
     for column in all_services:
-        if service in all_services[column]:
+        if service.lower() in [i.lower() for i in column]:
             return True
     return False
 
@@ -84,13 +86,13 @@ def request_to_service_db(services):
         services_db = json.load(services_json)
         
     for service in services:
-        if service in services_db['inservice']:
+        if service.lower() in [i.lower() for i in services_db['inservice']]:
             polis_ltd_inservice.append(service)
-        
-        elif service in services_db['outservice']:
+
+        elif service.lower() in [i.lower() for i in services_db['outservice']]:
             polis_ltd_notservice.append(service)
-            
+
         else:
             polis_ltd_notfoundservice.append(service)
             
-    return  polis_ltd_inservice, polis_ltd_notservice, polis_ltd_notfoundservice
+    return polis_ltd_inservice, polis_ltd_notservice, polis_ltd_notfoundservice

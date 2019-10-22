@@ -1,10 +1,8 @@
-from django.urls import re_path
-from .views import PolisCheckView, SearchView
-
+from django.urls import path
+from .views import PolisCheckView
 
 app_name = 'polischeck'
 
 urlpatterns = [
-    re_path(r'^polischeck/search\?\w.*', SearchView.as_view()),
-    re_path(r'^polischeck\?.*', PolisCheckView.as_view()),
+    path('polischeck/', PolisCheckView.as_view()),
     ]
