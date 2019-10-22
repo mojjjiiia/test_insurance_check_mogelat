@@ -3,6 +3,8 @@ from django.core.exceptions import ObjectDoesNotExist
 import re
 import os
 import json
+#Для перевода даты из json в формат DateTime использую Dateutil pip3 install python-dateutil
+from dateutil import parser
 
 
 class Polis(models.Model):
@@ -40,3 +42,34 @@ def service_check(service):
         if service in all_services[column]:
             return True
     return False
+
+def request_to_sk(company, number, polis_type):
+    companies_table = '/'.join([os.path.dirname(__file__), '../tables/companies_data.json'])
+    
+    with open(companies_table, 'r', encoding='UTF-8') as companies_json:
+        companies_from_db = json.load(companies_json)
+        
+    try:
+        for polis in companies_from_db[company]:
+            if polis_type == polis['type'] and number == polis['number']:
+                polis_ltd_sk = company
+                polis_ltd_type = polis['type']
+                polis_ltd_id = polis['number']
+                polis_ltd_date_end = parser.parse(polis['due_date']) #datetime.datime
+                polis_ltd_tel = polis['phone']
+    except KeyError:
+        raise ObjectDoesNotExist
+    
+    try:
+        return polis_ltd_sk, polis_ltd_type, polis_ltd_id, polis_ltd_date_end, polis_ltd_tel
+    except NameError:
+        raise ObjectDoesNotExist
+            
+            
+        
+        
+        
+        
+        
+        
+        
