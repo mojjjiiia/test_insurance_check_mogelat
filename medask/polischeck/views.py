@@ -28,8 +28,8 @@ class PolisCheckView(APIView):
         company = request.GET.get('company')
         polis_type = request.GET.get('type')
         number = request.GET.get('number')
-        services = request.GET.get('services')
-        
+        services = request.GET.get('services').split('+')
+      
         try:
             (
                 polis_ltd_sk, 
