@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Polis, num_check, service_check
+from .models import Polis, num_check, service_check, request_to_sk, request_to_service_db
 from .serializers import PolisSerializer
 
 class SearchView(APIView):
@@ -41,7 +41,21 @@ class PolisCheckView(APIView):
         except ObjectDoesNotExist:
             raise Http404 
         
+        (
+            polis_ltd_inservice,
+            polis_ltd_notservice,
+            polis_ltd_notfoundservice,
+        ) = request_to_service_db(services)
         
-        polises = Polis.objects.all()
-        serializer = PolisSerializer(polises, many=True)
-        return Response({'polises': serializer.data})
+        return Response(
+            {
+                 'polis_ltd_sk': polis_ltd_sk, 
+                 'polis_ltd_type': polis_ltd_type, 
+                 'polis_ltd_id': polis_ltd_id, 
+                 'polis_ltd_date_end': polis_ltd_date_end, 
+                 'polis_ltd_tel': polis_ltd_tel,
+                 'polis_ltd_inservice': polis_ltd_inservice,
+                 'polis_ltd_notservice': polis_ltd_notservice,
+                 'polis_ltd_notfoundservice': polis_ltd_notfoundservice,
+            }
+        )
