@@ -16,7 +16,8 @@ class Polis(models.Model):
     
     company_name = models.CharField(max_length=255)
     num_regex = models.CharField(max_length=50)
-    polis_type = models.CharField(max_length=3, choices=POLIS_TYPES, default='OMS')    
+    polis_type = models.CharField(max_length=3, choices=POLIS_TYPES, default='OMS')
+    BILLING = models.IntegerField(default=0)
     
     def __str__(self):
         return self.company_name + ' ' + self.polis_type
@@ -24,7 +25,7 @@ class Polis(models.Model):
 
 class LocalBase(models.Model):
     polis_ltd_prefix = models.CharField(max_length=50) #Regexp для ненайденных номеров полисов
-    local_polis_search = models.IntegerField()
+    local_polis_search = models.IntegerField(default=0)
     polis_ltd_datetime = models.DateTimeField(auto_now_add=True)
     #auto_now_add=True для того что бы оценить количество обращений по данному регулярному выражению и дату первого обращения   
 
