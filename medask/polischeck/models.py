@@ -43,6 +43,7 @@ def service_check(service):
             return True
     return False
 
+
 def request_to_sk(company, number, polis_type):
     companies_table = '/'.join([os.path.dirname(__file__), '../tables/companies_data.json'])
     
@@ -64,12 +65,25 @@ def request_to_sk(company, number, polis_type):
         return polis_ltd_sk, polis_ltd_type, polis_ltd_id, polis_ltd_date_end, polis_ltd_tel
     except NameError:
         raise ObjectDoesNotExist
+       
+
+def request_to_service_db(services):
+    polis_ltd_inservice = []
+    polis_ltd_notservice = []
+    polis_ltd_notfoundservice = []
+    
+    table_path = '/'.join([os.path.dirname(__file__), '../tables/services.json'])
+    with open(table_path, 'r', encoding='UTF-8') as services_json:
+        services_db = json.load(services_json)
+        
+    for service in services:
+        if service in services_db['inservice']:
+            polis_ltd_inservice.append(service)
+        
+        elif service in services_db['outservice']:
+            polis_ltd_notservice.append(service)
             
+        else:
+            polis_ltd_notfoundservice.append(service)
             
-        
-        
-        
-        
-        
-        
-        
+    return  polis_ltd_inservice, polis_ltd_notservice, polis_ltd_notfoundservice
