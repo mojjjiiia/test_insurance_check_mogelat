@@ -20,7 +20,13 @@ class Polis(models.Model):
     
     def __str__(self):
         return self.company_name + ' ' + self.polis_type
+    
 
+class LocalBase(models.Model):
+    polis_ltd_prefix = models.CharField(max_length=50) #Regexp для ненайденных номеров полисов
+    local_polis_search = models.IntegerField()
+    polis_ltd_datetime = models.DateTimeField(auto_now_add=True)
+    #auto_now_add=True для того что бы оценить количество обращений по данному регулярному выражению и дату первого обращения   
 
 def num_check(number):
     
