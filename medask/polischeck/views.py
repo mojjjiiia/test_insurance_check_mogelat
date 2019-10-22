@@ -5,7 +5,6 @@ from rest_framework.views import APIView
 from .models import Polis, num_check, service_check
 from .serializers import PolisSerializer
 
-
 class SearchView(APIView):
     def get(self, request):
         number = request.GET.get('number', None)
@@ -24,8 +23,25 @@ class SearchView(APIView):
             return Response({'service_in_base': in_database})        
 
 
-class PolisView(APIView):
+class PolisCheckView(APIView):
     def get(self, request):
+        company = request.GET.get('company')
+        polis_type = request.GET.get('type')
+        number = request.GET.get('number')
+        services = request.GET.get('services')
+        
+        try:
+            (
+                polis_ltd_sk, 
+                polis_ltd_type, 
+                polis_ltd_id, 
+                polis_ltd_date_end, 
+                polis_ltd_tel,
+            ) = request_to_sk(company, number, polis_type)
+        except ObjectDoesNotExist:
+            raise Http404 
+        
+        
         polises = Polis.objects.all()
         serializer = PolisSerializer(polises, many=True)
         return Response({'polises': serializer.data})
