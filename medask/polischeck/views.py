@@ -2,7 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import num_check, service_check, request_to_sk, num_to_regex
+from .utils import num_check, service_check, num_to_regex, request_to_sk
 from .serializers import PolisSerializer, NotFoundPolisSerializer
 from urllib.parse import unquote_plus
 
@@ -40,6 +40,7 @@ class PolisCheckView(APIView):
                     polis = nf_serializer.save()
                 else:
                     return Response(nf_serializer.errors)
+
             try:
                 resp = request_to_sk(**serializer.validated_data, services=request.data['services'])
                 polis.BILLING += 1
@@ -49,6 +50,8 @@ class PolisCheckView(APIView):
                 polis.not_found_search += 1
                 polis.save()
                 raise Http404
+            except Http404:
+                return Response({'Company': 'WRONG NAME!'}, status=404)
 
         else:
             return Response(serializer.errors)
