@@ -24,6 +24,7 @@ class PolisCheckView(APIView):
             service = unquote_plus(service)
             in_database = service_check(service)
             return Response({'service_in_base': in_database})
+        return Response("EMPTY REQUEST")
 
     def post(self, request):
         
