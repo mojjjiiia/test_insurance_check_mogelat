@@ -24,10 +24,10 @@ class Polis(models.Model):
         return self.company_name + ' ' + self.polis_type
     
 
-class LocalBase(models.Model):
-    polis_ltd_prefix = models.CharField(max_length=50) #Regexp для ненайденных номеров полисов
-    local_polis_search = models.IntegerField(default=0)
-    polis_ltd_datetime = models.DateTimeField(auto_now_add=True)
+#class LocalBase(models.Model):
+#    polis_ltd_prefix = models.CharField(max_length=50) #Regexp для ненайденных номеров полисов
+#    local_polis_search = models.IntegerField(default=0)
+#    polis_ltd_datetime = models.DateTimeField(auto_now_add=True)
     #auto_now_add=True для того что бы оценить количество обращений по данному регулярному выражению и дату первого обращения   
 
 
