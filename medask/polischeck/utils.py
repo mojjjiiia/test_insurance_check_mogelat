@@ -20,7 +20,7 @@ def num_check(number):
     raise ObjectDoesNotExist
 
 # Проверка существования запрашиваемой услуги в БД СК
-# Возвращает: True если услуга есть в Предоставляемых или Не предоставляемых услугах иначе False:
+# Возвращает: True если услуга есть в Предоставляемых или Не предоставляемых услугах ( в БД страховой компании) иначе False:
 def service_check(service):
     table_path = '/'.join([os.path.dirname(__file__), '../tables/services.json'])
     with open(table_path, 'r', encoding='UTF-8') as services_json:
@@ -42,7 +42,7 @@ def request_to_sk(company, number, polis_type, services):
     with open(companies_table, 'r', encoding='UTF-8') as companies_json:
         companies_from_db = json.load(companies_json)
     try:
-# !!!!ИМЕНЯ СК В БД ДОЛЖНЫ БЫТЬ ПРОПИСАНЫ СТРОГО БОЛЬШИМИ БУКВАМИ!!!!
+# !!!!ИМЕНА СК В БД ДОЛЖНЫ БЫТЬ ПРОПИСАНЫ СТРОГО БОЛЬШИМИ БУКВАМИ!!!!
         for polis in companies_from_db[company.upper()]:
             if polis_type == polis['type'] and number == polis['number']:
                 polis_ltd_sk = company
@@ -67,7 +67,7 @@ def request_to_sk(company, number, polis_type, services):
                 }
 
         raise ObjectDoesNotExist
-    except KeyError: # Если по какой то причине из формы пришло неверное название компании вернется исключение Http404
+    except KeyError: # Если по какой-то причине из формы пришло неверное название компании, вернется исключение Http404
         raise Http404
 
 # Запрос доступных услуг из БД СК.
@@ -80,7 +80,7 @@ def request_to_service_db(services):
     table_path = '/'.join([os.path.dirname(__file__), '../tables/services.json'])
     with open(table_path, 'r', encoding='UTF-8') as services_json:
         services_db = json.load(services_json)
-# Регистр не имеет значения
+# Регистр в названиях услуг не имеет значения
     for service in services:
         if service.lower() in [i.lower() for i in services_db['inservice']]:
             polis_ltd_inservice.append(service)
