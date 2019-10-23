@@ -53,7 +53,7 @@ def service_check(service):
     return False
 
 
-def request_to_sk(company, number, polis_type):
+def request_to_sk(company, number, polis_type, services):
     companies_table = '/'.join([os.path.dirname(__file__), '../tables/companies_data.json'])
     
     with open(companies_table, 'r', encoding='UTF-8') as companies_json:
@@ -69,11 +69,26 @@ def request_to_sk(company, number, polis_type):
                 polis_ltd_tel = polis['phone']
     except KeyError:
         raise ObjectDoesNotExist
+    (
+        polis_ltd_inservice, 
+        polis_ltd_notservice, 
+        polis_ltd_notfoundservice
+    ) = request_to_service_db(services)
+    return (
+        polis_ltd_sk, 
+        polis_ltd_type, 
+        polis_ltd_id, 
+        polis_ltd_date_end, 
+        polis_ltd_tel,
+        polis_ltd_inservice, 
+        polis_ltd_notservice, 
+        polis_ltd_notfoundservice
+           )
     
-    try:
-        return polis_ltd_sk, polis_ltd_type, polis_ltd_id, polis_ltd_date_end, polis_ltd_tel
-    except NameError:
-        raise ObjectDoesNotExist
+    #try:
+    #    return polis_ltd_sk, polis_ltd_type, polis_ltd_id, polis_ltd_date_end, polis_ltd_tel
+    #except NameError:
+    #    raise ObjectDoesNotExist
        
 
 def request_to_service_db(services):
