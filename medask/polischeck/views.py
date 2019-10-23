@@ -35,8 +35,6 @@ class PolisCheckView(APIView):
         
         serializer = PolisSerializer(request.data)
         if serializer.is_valid():     
-            polis = Polis.objects.filter(company_name=request.data['company'], polis_type=request.data['polis_type'])
-            for polis in polises:
             try:
                 polis = numcheck(request.data['polis_number'])[-1]
             except ObjectDoesNotExist:
