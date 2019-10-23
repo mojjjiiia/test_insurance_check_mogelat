@@ -11,7 +11,7 @@ class PolisCheckView(APIView):
     def get(self, request):
         number = request.GET.get('number', None)
         service = request.GET.get('service', None)
-# Если в GET запросе указан параметр number, проверяет в локальной БД формата номера полиса
+# Если в GET запросе указан параметр number, проверяет принадлежность полиса к СК из локальной БД
 # Вернется имя компании и тип полиса
         if number:
             resp = {}
@@ -20,8 +20,8 @@ class PolisCheckView(APIView):
                 return Response(resp)
             except ObjectDoesNotExist:
                 return Response('Not in local database', status=404)
-# Если в GET запросе указан параметр service, проверяет в БД СК наличие услуги (доступной и недоступной)
-# Вернет True или False (если отстуствует в БД)
+# Если в GET запросе указан параметр service, проверяет в БД СК наличие услуги (как доступной так и недоступной)
+# Вернет True или False (если отстуствует в БД (нет ни в доступных ни в недоступных услугах))
         if service:
             service = unquote_plus(service)
             in_database = service_check(service)
@@ -35,7 +35,7 @@ class PolisCheckView(APIView):
             try:
                 polis = num_check(request.data['number'])[-1] # поиск инстанса модели из локальной БД
             except ObjectDoesNotExist:
-# Если инстанс не найден создаем новый инстанс с новой регуляркой
+# Если инстанс не найден создаем новый инстанс с новой регуляркой и сохраняем в локальной БД
                 regex = num_to_regex(request.data['number'])
                 nf_serializer = NotFoundPolisSerializer(data={'company':request.data['company'],
                                                         'num_regex': regex,
