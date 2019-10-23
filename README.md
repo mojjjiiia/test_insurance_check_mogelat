@@ -2,7 +2,7 @@
 
 Back-end окна проверки страховых полисов
 
-Используемые инструменты:
+Используемые инструменты:\n
 Python ver: 3.7.3;
 Django Framework ver: 2.2.6;
 Django Rest Framework ver: 3.10.3;
