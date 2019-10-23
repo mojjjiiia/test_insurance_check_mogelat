@@ -9,3 +9,10 @@ class PolisSerializer(serializers.Serializer):
     polis_number = serializers.CharField(max_length = 50) 
     polis_type = serializers.ChoiceField(choices)
     services = serializers.CharField(max_length = 255)     
+
+    
+class NotFoundPolisSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Polis
+        fields = ['company_name', 'num_regex', 'polis_type']
+        
