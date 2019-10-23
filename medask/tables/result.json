@@ -1,0 +1,17 @@
+{
+    "polis_ltd_sk": "СК МЕД-АСКЕР",
+    "polis_ltd_type": "DMS",
+    "polis_ltd_id": "1234 12345678",
+    "polis_ltd_date_end": "14.08.2020",
+    "polis_ltd_tel": "8 (495) 123-45-67",
+    "polis_ltd_inservice": [
+        "Полирование челюсти",
+        "Снятие камней с 1 зуба"
+    ],
+    "polis_ltd_notservice": [
+        "МРТ головного мозга"
+    ],
+    "polis_ltd_notfoundservice": [
+        "Почтистить зубы"
+    ]
+}
