@@ -96,3 +96,9 @@ def request_to_service_db(services):
             polis_ltd_notfoundservice.append(service)
             
     return polis_ltd_inservice, polis_ltd_notservice, polis_ltd_notfoundservice
+
+def num_to_regex(number):
+    regex = ''
+    for i in ['\d' if i.isdigit() else i for i in number]:
+        regex += i
+    return regex
