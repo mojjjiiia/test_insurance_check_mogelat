@@ -1,11 +1,12 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import num_check, service_check, request_to_sk, request_to_service_db
-from .serializers import PolisSerializer
+from .models import Polis, num_check, service_check, request_to_sk, request_to_service_db, num_to_regex
+from .serializers import PolisSerializer, NotFoundPolisSerializer
 from urllib.parse import unquote_plus
-import json
+import json, re
 
 
 class PolisCheckView(APIView):
@@ -16,7 +17,7 @@ class PolisCheckView(APIView):
         if number:
             resp = {}
             try:
-                resp['company'], resp['polis_type'] = num_check(unquote_plus(number))
+                resp['company'], resp['polis_type'], polis = num_check(unquote_plus(number))
                 return Response(resp)
             except ObjectDoesNotExist:
                 return Response(resp)
@@ -33,7 +34,20 @@ class PolisCheckView(APIView):
         #services = request.data['services']
         
         serializer = PolisSerializer(request.data)
-        if serializer.is_valid():
+        if serializer.is_valid():     
+            polis = Polis.objects.filter(company_name=request.data['company'], polis_type=request.data['polis_type'])
+            for polis in polises:
+            try:
+                polis = numcheck(request.data['polis_number'])[-1]
+            except ObjectDoesNotExist:
+                regex = num_to_regex(request.data['polis_number'])
+                nf_serializer = NotFoundPolisSerializer(company_name=request.data['company'], 
+                                                        num_regex=regex, 
+                                                        polis_type=request.data['polis_type'])
+                if nf_serializer.is_valid():
+                    polis = nf_serializer.save()
+                else:
+                    return Response(nf_serializer.errors)
             try:
             #(
             #    polis_ltd_sk,
@@ -45,8 +59,13 @@ class PolisCheckView(APIView):
             #    polis_ltd_notservice,
             #    polis_ltd_notfoundservice,
             #) = request_to_sk(serializer.validated_data)
-                return Response(request_to_sk(serializer.validated_data))
+                resp = request_to_sk(serializer.validated_data)
+                polis.BILLING += 1
+                polis.save()
+                return Response(resp)
             except ObjectDoesNotExist:
+                polis.not_found_search += 1
+                polis.save()
                 raise Http404
         #(
         #    polis_ltd_inservice,
