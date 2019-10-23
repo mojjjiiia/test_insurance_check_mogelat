@@ -74,16 +74,16 @@ def request_to_sk(company, number, polis_type, services):
         polis_ltd_notservice, 
         polis_ltd_notfoundservice
     ) = request_to_service_db(services)
-    return (
-        polis_ltd_sk, 
-        polis_ltd_type, 
-        polis_ltd_id, 
-        polis_ltd_date_end, 
-        polis_ltd_tel,
-        polis_ltd_inservice, 
-        polis_ltd_notservice, 
-        polis_ltd_notfoundservice
-           )
+    return {
+        'polis_ltd_sk': polis_ltd_sk,  
+        'polis_ltd_type': polis_ltd_type, 
+        'polis_ltd_id': polis_ltd_id, 
+        'polis_ltd_date_end': polis_ltd_date_end, 
+        'polis_ltd_tel': polis_ltd_tel,
+        'polis_ltd_inservice': polis_ltd_inservice, 
+        'polis_ltd_notservice': polis_ltd_notservice, 
+        'polis_ltd_notfoundservice': polis_ltd_notfoundservice,
+    }
     
     #try:
     #    return polis_ltd_sk, polis_ltd_type, polis_ltd_id, polis_ltd_date_end, polis_ltd_tel
